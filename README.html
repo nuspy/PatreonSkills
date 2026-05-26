@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patreon Creator Skill — Documentazione</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg2: #1a1d2e;
+    --bg3: #252840;
+    --border: #2e3250;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --accent: #f96854;
+    --accent2: #ff8c42;
+    --blue: #60a5fa;
+    --green: #4ade80;
+    --yellow: #fbbf24;
+    --purple: #a78bfa;
+    --pink: #f472b6;
+    --code-bg: #1e2235;
+    --sidebar-w: 260px;
+    --font: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+
+  /* ── Layout ── */
+  .layout { display: flex; min-height: 100vh; }
+  .sidebar {
+    width: var(--sidebar-w); min-width: var(--sidebar-w);
+    background: var(--bg2); border-right: 1px solid var(--border);
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    padding: 20px 0;
+  }
+  .main { flex: 1; max-width: 900px; padding: 48px 56px; overflow-x: hidden; }
+  @media (max-width: 900px) {
+    .layout { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; position: static; }
+    .main { padding: 24px 20px; }
+  }
+
+  /* ── Sidebar ── */
+  .sidebar-logo {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  .sidebar-logo .logo-icon { font-size: 28px; }
+  .sidebar-logo .logo-text { font-size: 13px; font-weight: 700; color: var(--accent); margin-top: 4px; }
+  .sidebar-logo .logo-sub { font-size: 11px; color: var(--text2); }
+  .nav-section { padding: 4px 20px; margin-top: 8px; }
+  .nav-section-title {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--text2); padding: 6px 0 4px;
+  }
+  .nav-item {
+    display: block; padding: 5px 8px; border-radius: 6px;
+    color: var(--text2); text-decoration: none; font-size: 13px;
+    transition: all 0.15s; border-left: 2px solid transparent;
+  }
+  .nav-item:hover { color: var(--text); background: var(--bg3); }
+  .nav-item.active { color: var(--accent); border-left-color: var(--accent); background: rgba(249,104,84,0.08); }
+  .nav-badge {
+    float: right; font-size: 10px; background: var(--bg3);
+    color: var(--text2); padding: 1px 6px; border-radius: 10px;
+  }
+
+  /* ── Typography ── */
+  h1 { font-size: 2.4em; font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+  h2 { font-size: 1.6em; font-weight: 700; margin: 48px 0 16px; padding-top: 8px; border-top: 1px solid var(--border); }
+  h3 { font-size: 1.15em; font-weight: 600; margin: 28px 0 10px; color: var(--blue); }
+  h4 { font-size: 0.95em; font-weight: 600; margin: 16px 0 8px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; }
+  p { margin-bottom: 12px; color: var(--text); }
+  a { color: var(--blue); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--text); font-weight: 600; }
+  em { color: var(--yellow); font-style: italic; }
+
+  /* ── Hero ── */
+  .hero { margin-bottom: 48px; }
+  .hero-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 600; padding: 4px 10px;
+    border-radius: 20px; border: 1px solid;
+  }
+  .badge-orange { color: var(--accent); border-color: rgba(249,104,84,0.4); background: rgba(249,104,84,0.08); }
+  .badge-green { color: var(--green); border-color: rgba(74,222,128,0.4); background: rgba(74,222,128,0.08); }
+  .badge-blue { color: var(--blue); border-color: rgba(96,165,250,0.4); background: rgba(96,165,250,0.08); }
+  .badge-purple { color: var(--purple); border-color: rgba(167,139,250,0.4); background: rgba(167,139,250,0.08); }
+  .hero-desc { font-size: 1.1em; color: var(--text2); max-width: 620px; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px 24px; margin: 16px 0;
+  }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 16px 0; }
+  .feature-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px; transition: border-color 0.2s;
+  }
+  .feature-card:hover { border-color: var(--accent); }
+  .feature-card .icon { font-size: 22px; margin-bottom: 8px; }
+  .feature-card .title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .feature-card .count { font-size: 11px; color: var(--accent); font-weight: 600; }
+  .feature-card .desc { font-size: 12px; color: var(--text2); margin-top: 6px; }
+
+  /* ── Code ── */
+  pre, code { font-family: var(--font-mono); font-size: 13px; }
+  code {
+    background: var(--code-bg); color: #e2e8f0;
+    padding: 2px 6px; border-radius: 4px; font-size: 12.5px;
+  }
+  pre {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px 20px; overflow-x: auto;
+    margin: 12px 0 20px; line-height: 1.6;
+  }
+  pre code { background: none; padding: 0; font-size: 13px; }
+  .code-header {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-bottom: none; border-radius: 10px 10px 0 0;
+    padding: 8px 16px; font-size: 12px; color: var(--text2);
+  }
+  .code-header + pre { border-radius: 0 0 10px 10px; margin-top: 0; }
+  .code-lang { font-family: var(--font-mono); font-size: 11px; color: var(--accent2); font-weight: 600; }
+  .kw { color: #c792ea; } .str { color: #c3e88d; } .num { color: #f78c6c; }
+  .cmt { color: #546e7a; font-style: italic; } .fn { color: #82aaff; }
+  .param { color: #ffcb6b; } .op { color: #89ddff; }
+
+  /* ── Tool cards ── */
+  .tool-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px 20px; margin: 10px 0;
+    transition: border-color 0.15s;
+  }
+  .tool-card:hover { border-color: var(--blue); }
+  .tool-name {
+    font-family: var(--font-mono); font-size: 14px;
+    color: var(--green); font-weight: 700;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tool-desc { font-size: 13px; color: var(--text2); margin: 6px 0 10px; }
+  .tool-params { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .param-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 11px; font-family: var(--font-mono);
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 6px; padding: 2px 8px;
+  }
+  .param-chip .pname { color: var(--yellow); }
+  .param-chip .ptype { color: var(--text2); }
+  .param-chip .preq { color: var(--accent); font-size: 10px; }
+  .tag {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 2px 7px; border-radius: 4px; margin-left: 6px;
+  }
+  .tag-read { background: rgba(74,222,128,0.15); color: var(--green); }
+  .tag-write { background: rgba(249,104,84,0.15); color: var(--accent); }
+  .tag-rag { background: rgba(167,139,250,0.15); color: var(--purple); }
+  .tag-ai { background: rgba(96,165,250,0.15); color: var(--blue); }
+  .tag-browser { background: rgba(251,191,36,0.15); color: var(--yellow); }
+
+  /* ── Steps ── */
+  .steps { margin: 16px 0; }
+  .step {
+    display: flex; gap: 16px; margin-bottom: 20px;
+    padding-bottom: 20px; border-bottom: 1px solid var(--border);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    width: 32px; height: 32px; min-width: 32px; border-radius: 50%;
+    background: var(--accent); color: white; font-weight: 800;
+    font-size: 14px; display: flex; align-items: center; justify-content: center;
+  }
+  .step-content h4 { margin: 0 0 6px; color: var(--text); font-size: 14px; text-transform: none; letter-spacing: 0; }
+  .step-content p { font-size: 13px; color: var(--text2); margin: 0; }
+
+  /* ── Use case ── */
+  .use-case {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 12px; margin: 20px 0; overflow: hidden;
+  }
+  .use-case-header {
+    padding: 16px 20px; background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .use-case-icon { font-size: 22px; }
+  .use-case-title { font-weight: 700; font-size: 15px; }
+  .use-case-subtitle { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .use-case-body { padding: 16px 20px; }
+  .use-case-flow {
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0;
+  }
+  .flow-step {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 6px; padding: 4px 10px;
+    font-size: 12px; font-family: var(--font-mono); color: var(--green);
+  }
+  .flow-arrow { color: var(--text2); font-size: 14px; }
+  .agent-box {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px 16px; margin: 10px 0;
+  }
+  .agent-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text2); margin-bottom: 6px; }
+  .agent-text { font-size: 13px; font-style: italic; color: var(--text); }
+
+  /* ── Table ── */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  th { background: var(--bg3); padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text2); border-bottom: 1px solid var(--border); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg3); }
+
+  /* ── Alert ── */
+  .alert {
+    padding: 12px 16px; border-radius: 8px; margin: 14px 0;
+    font-size: 13px; display: flex; gap: 10px; align-items: flex-start;
+  }
+  .alert-icon { font-size: 16px; margin-top: 1px; }
+  .alert-warning { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.3); color: var(--yellow); }
+  .alert-info { background: rgba(96,165,250,0.08); border: 1px solid rgba(96,165,250,0.3); color: var(--blue); }
+  .alert-success { background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.3); color: var(--green); }
+
+  /* ── Footer ── */
+  footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--text2); font-size: 12px; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+  .pill { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+  .pill-green { background: rgba(74,222,128,0.15); color: var(--green); }
+  .pill-red { background: rgba(249,104,84,0.15); color: var(--accent); }
+  .pill-blue { background: rgba(96,165,250,0.15); color: var(--blue); }
+  .section-anchor { scroll-margin-top: 24px; }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🎨</div>
+    <div class="logo-text">Patreon Creator Skill</div>
+    <div class="logo-sub">MCP Server · 52 tools · v1.0</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Getting Started</div>
+    <a class="nav-item" href="#overview">Overview</a>
+    <a class="nav-item" href="#quickstart">Quick Start</a>
+    <a class="nav-item" href="#install">Installation</a>
+    <a class="nav-item" href="#config">Configuration</a>
+    <a class="nav-item" href="#mcp-setup">MCP Client Setup</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Tool Reference</div>
+    <a class="nav-item" href="#tools-auth">Auth &amp; Setup <span class="nav-badge">3</span></a>
+    <a class="nav-item" href="#tools-campaign">Campaign Analytics <span class="nav-badge">6</span></a>
+    <a class="nav-item" href="#tools-members">Supporter Analytics <span class="nav-badge">10</span></a>
+    <a class="nav-item" href="#tools-content">Content &amp; Posts <span class="nav-badge">8</span></a>
+    <a class="nav-item" href="#tools-competitor">Competitor Intel <span class="nav-badge">7</span></a>
+    <a class="nav-item" href="#tools-comments">Comment Management <span class="nav-badge">4</span></a>
+    <a class="nav-item" href="#tools-kb">Knowledge Base <span class="nav-badge">5</span></a>
+    <a class="nav-item" href="#tools-webhooks">Webhooks <span class="nav-badge">4</span></a>
+    <a class="nav-item" href="#tools-reports">Reports &amp; Monitoring <span class="nav-badge">6</span></a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Use Cases</div>
+    <a class="nav-item" href="#uc-analytics">Patron Analytics</a>
+    <a class="nav-item" href="#uc-content">Content Strategy</a>
+    <a class="nav-item" href="#uc-competitor">Competitor Research</a>
+    <a class="nav-item" href="#uc-comments">Automate Comments</a>
+    <a class="nav-item" href="#uc-growth">Growth Strategy</a>
+    <a class="nav-item" href="#uc-reports">Monthly Reports</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Reference</div>
+    <a class="nav-item" href="#architecture">Architecture</a>
+    <a class="nav-item" href="#api-limits">API Limitations</a>
+    <a class="nav-item" href="#troubleshoot">Troubleshooting</a>
+    <a class="nav-item" href="#installer">Auto Installer</a>
+  </div>
+</nav>
+
+<main class="main">
+
+<section id="overview" class="hero section-anchor">
+  <div class="hero-badges">
+    <span class="badge badge-orange">🎨 Patreon API v2</span>
+    <span class="badge badge-green">✅ Model-Agnostic</span>
+    <span class="badge badge-blue">🤖 52 MCP Tools</span>
+    <span class="badge badge-purple">🧠 RAG Built-in</span>
+  </div>
+  <h1>Patreon Creator Skill</h1>
+  <p class="hero-desc">
+    Un MCP server completo per creator Patreon: analisi supporter, intelligence competitiva,
+    generazione contenuti, pubblicazione automatica e gestione commenti con RAG.
+    Funziona con qualsiasi agente MCP — Hermes, OpenClaw, Claude, GPT, Llama, Mistral.
+  </p>
+  <div class="alert alert-info" style="margin-top:20px">
+    <div class="alert-icon">ℹ️</div>
+    <div><strong>Design Model-Agnostic:</strong> lo skill non chiama nessun LLM direttamente. I tool restituiscono dati strutturati + un campo <code>*_prompt</code> che il tuo agente passa al <em>suo</em> modello. Compatibile con Hermes, OpenClaw, Claude, GPT, Llama, Mistral — qualsiasi agente MCP.</div>
+  </div>
+  <div class="card-grid" style="margin-top:28px">
+    <div class="feature-card"><div class="icon">📊</div><div class="title">Campaign Analytics</div><div class="count">6 tools</div><div class="desc">Revenue, tier analysis, goals, growth strategy</div></div>
+    <div class="feature-card"><div class="icon">👥</div><div class="title">Supporter Analytics</div><div class="count">10 tools</div><div class="desc">Demographics, churn, cohorts, LTV, segmentation</div></div>
+    <div class="feature-card"><div class="icon">📝</div><div class="title">Content Tools</div><div class="count">8 tools</div><div class="desc">Post drafts, media prompts, content calendar</div></div>
+    <div class="feature-card"><div class="icon">🔍</div><div class="title">Competitor Intel</div><div class="count">7 tools</div><div class="desc">Scraping, benchmarking, trend analysis</div></div>
+    <div class="feature-card"><div class="icon">💬</div><div class="title">Comment Management</div><div class="count">4 tools</div><div class="desc">RAG responses, bulk reply automation</div></div>
+    <div class="feature-card"><div class="icon">🧠</div><div class="title">Knowledge Base</div><div class="count">5 tools</div><div class="desc">ChromaDB RAG, local embeddings, semantic search</div></div>
+  </div>
+</section>
+
+<section id="quickstart" class="section-anchor">
+  <h2>⚡ Quick Start</h2>
+  <p>Dall'installazione al primo tool in meno di 5 minuti.</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Ottieni il Creator Access Token</h4><p>Vai su <a href="https://www.patreon.com/portal/registration/register-clients">patreon.com/portal</a> → crea un client → copia il <strong>Creator Access Token</strong></p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Installa lo skill (installer autonomo)</h4>
+    <div class="code-header"><span>Terminal</span><span class="code-lang">bash</span></div>
+    <pre><code>curl -sSL https://raw.githubusercontent.com/nuspy/patreonskills/main/install.py \
+  | python - --token pat_TuoTokenQui --client claude</code></pre></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Riavvia il tuo MCP client</h4><p>Riavvia Claude Desktop / Cursor / VS Code per caricare il nuovo server MCP.</p></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Verifica la connessione</h4>
+    <div class="agent-box"><div class="agent-label">💬 Dì al tuo agente</div><div class="agent-text">"Controlla la connessione Patreon e dimmi qual è il mio campaign ID"</div></div>
+    <p style="font-size:13px;color:var(--text2);margin-top:8px">L'agente chiamerà <code>patreon_check_connection</code> e poi <code>campaign_get_overview</code></p></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-content"><h4>Indicizza la tua knowledge base</h4>
+    <div class="agent-box"><div class="agent-label">💬 Dì al tuo agente</div><div class="agent-text">"Indicizza tutti i miei post Patreon nel knowledge base usando il campaign ID [ID]"</div></div></div></div>
+  </div>
+</section>
+
+<section id="install" class="section-anchor">
+  <h2>📦 Installazione</h2>
+  <h3>Metodo 1: Installer automatico (raccomandato)</h3>
+  <div class="code-header"><span>Installer autonomo — un solo comando</span><span class="code-lang">bash</span></div>
+  <pre><code><span class="cmt"># Installa e configura per Claude Desktop</span>
+python install.py --token pat_TuoToken --client claude
+
+<span class="cmt"># Per Cursor</span>
+python install.py --token pat_TuoToken --client cursor
+
+<span class="cmt"># Con venv + Playwright + LLM locale</span>
+python install.py --token pat_TuoToken --client claude \
+  --venv --playwright \
+  --llm-url http://localhost:11434 --llm-model hermes3
+
+<span class="cmt"># Per CI/CD con output JSON per l'agente</span>
+python install.py --token-file /run/secrets/patreon_token \
+  --client claude --quiet --output-json /tmp/result.json</code></pre>
+
+  <h3>Metodo 2: Installazione manuale</h3>
+  <div class="code-header"><span>Terminal</span><span class="code-lang">bash</span></div>
+  <pre><code>git clone https://github.com/nuspy/patreonskills
+cd patreonskills
+pip install -r scripts/requirements.txt
+playwright install chromium  <span class="cmt"># opzionale</span>
+export PATREON_ACCESS_TOKEN=pat_TuoTokenQui
+python scripts/auth.py status</code></pre>
+
+  <h3>Prerequisiti</h3>
+  <table>
+    <thead><tr><th>Requisito</th><th>Versione</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>Python</td><td>3.11+</td><td>Richiesto</td></tr>
+      <tr><td>Patreon Access Token</td><td>—</td><td>Da <a href="https://www.patreon.com/portal">patreon.com/portal</a></td></tr>
+      <tr><td>Playwright + Chromium</td><td>1.45+</td><td>Solo per publish/commenti automatici</td></tr>
+      <tr><td>Google/Bing API Key</td><td>—</td><td>Solo per competitor web search</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="config" class="section-anchor">
+  <h2>⚙️ Configurazione</h2>
+  <div class="code-header"><span>.env</span><span class="code-lang">env</span></div>
+  <pre><code><span class="cmt"># ── RICHIESTO ──────────────────────────────────</span>
+<span class="param">PATREON_ACCESS_TOKEN</span>=pat_...
+
+<span class="cmt"># ── LLM OPZIONALE ─────────────────────────────</span>
+<span class="cmt"># I tool restituiscono *_prompt per il modello dell'agente.</span>
+<span class="cmt"># Configura solo per preprocessing batch autonomo.</span>
+<span class="param">LLM_BASE_URL</span>=http://localhost:11434  <span class="cmt"># Ollama, LM Studio, ecc.</span>
+<span class="param">LLM_MODEL</span>=hermes3
+<span class="param">LLM_API_KEY</span>=
+
+<span class="cmt"># ── COMPETITOR INTELLIGENCE ───────────────────</span>
+<span class="param">GOOGLE_SEARCH_API_KEY</span>=...
+<span class="param">GOOGLE_SEARCH_CX</span>=...
+<span class="param">BING_SEARCH_API_KEY</span>=...
+
+<span class="cmt"># ── BROWSER AUTOMATION ────────────────────────</span>
+<span class="param">PATREON_EMAIL</span>=tua@email.com
+<span class="param">PATREON_PASSWORD</span>=tuaPassword
+<span class="param">BROWSER_HEADLESS</span>=true</code></pre>
+</section>
+
+<section id="mcp-setup" class="section-anchor">
+  <h2>🔌 Configurazione MCP Client</h2>
+  <h3>Claude Desktop</h3>
+  <p>File: <code>~/Library/Application Support/Claude/claude_desktop_config.json</code> (macOS) o <code>%APPDATA%\Claude\claude_desktop_config.json</code> (Windows)</p>
+  <div class="code-header"><span>claude_desktop_config.json</span><span class="code-lang">json</span></div>
+  <pre><code>{
+  <span class="str">"mcpServers"</span>: {
+    <span class="str">"patreon-creator-skill"</span>: {
+      <span class="str">"command"</span>: <span class="str">"python"</span>,
+      <span class="str">"args"</span>: [<span class="str">"-m"</span>, <span class="str">"scripts.mcp_server"</span>],
+      <span class="str">"cwd"</span>: <span class="str">"/percorso/a/patreonskills"</span>,
+      <span class="str">"env"</span>: { <span class="str">"PATREON_ACCESS_TOKEN"</span>: <span class="str">"pat_TuoToken"</span> }
+    }
+  }
+}</code></pre>
+
+  <h3>Cursor / VS Code</h3>
+  <div class="code-header"><span>.cursor/mcp.json</span><span class="code-lang">json</span></div>
+  <pre><code>{
+  <span class="str">"servers"</span>: {
+    <span class="str">"patreon-creator-skill"</span>: {
+      <span class="str">"command"</span>: <span class="str">"python"</span>,
+      <span class="str">"args"</span>: [<span class="str">"-m"</span>, <span class="str">"scripts.mcp_server"</span>],
+      <span class="str">"cwd"</span>: <span class="str">"/percorso/a/patreonskills"</span>,
+      <span class="str">"env"</span>: { <span class="str">"PATREON_ACCESS_TOKEN"</span>: <span class="str">"pat_TuoToken"</span> }
+    }
+  }
+}</code></pre>
+
+  <h3>Dev Mode (test)</h3>
+  <pre><code>mcp dev scripts/mcp_server.py</code></pre>
+</section>
+
+<!-- TOOL REFERENCE -->
+<section id="tools-auth" class="section-anchor">
+  <h2>🔐 Autenticazione &amp; Setup</h2>
+  <div class="tool-card">
+    <div class="tool-name">patreon_check_connection <span class="tag tag-read">READ</span></div>
+    <div class="tool-desc">Verifica le credenziali API, mostra nome utente e lista campagne. Usa come primo step.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">—</span><span class="ptype"> nessun parametro</span></span></div>
+    <pre><code>{ <span class="str">"status"</span>: <span class="str">"connected"</span>, <span class="str">"name"</span>: <span class="str">"Mario Rossi"</span>, <span class="str">"campaigns"</span>: [{ <span class="str">"id"</span>: <span class="str">"987654"</span>, <span class="str">"name"</span>: <span class="str">"Il Mio Podcast"</span> }] }</code></pre>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">patreon_get_identity <span class="tag tag-read">READ</span></div>
+    <div class="tool-desc">Profilo completo del creator: nome, email, URL, vanity, bio.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">—</span><span class="ptype"> nessun parametro</span></span></div>
+  </div>
+</section>
+
+<section id="tools-campaign" class="section-anchor">
+  <h2>📊 Campaign Analytics</h2>
+  <div class="tool-card">
+    <div class="tool-name">campaign_get_overview <span class="tag tag-read">READ</span></div>
+    <div class="tool-desc">Panoramica campagna: MRR, patron count, URL, data creazione.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">—</span><span class="ptype"> nessun parametro</span></span></div>
+    <pre><code>{ <span class="str">"campaign_id"</span>: <span class="str">"987654"</span>, <span class="str">"patron_count"</span>: <span class="num">342</span>, <span class="str">"mrr"</span>: <span class="str">"$1,847.50"</span> }</code></pre>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">campaign_analyze_tiers <span class="tag tag-read">READ</span><span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Struttura tier: prezzi, patron per tier, revenue, percentuale. Include <code>analysis_prompt</code> per il tuo modello.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span></div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">campaign_track_goals <span class="tag tag-read">READ</span></div>
+    <div class="tool-desc">Stato avanzamento obiettivi con percentuale e MRR attuale.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span></div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">campaign_revenue_breakdown <span class="tag tag-read">READ</span><span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Revenue dettagliata per tier, ARPP, concentrazione rischio. Include <code>forecast_prompt</code>.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span></div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">campaign_suggest_tier_optimization <span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Dati tier + <code>optimization_prompt</code> per raccomandazioni pricing dal tuo modello.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">niche</span><span class="ptype"> str</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">campaign_generate_growth_strategy <span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Dati campagna aggregati → <code>strategy_prompt</code> per piano crescita a N giorni dal tuo modello.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">niche</span><span class="ptype"> str</span></span>
+      <span class="param-chip"><span class="pname">timeframe_days</span><span class="ptype"> int (default 90)</span></span>
+    </div>
+  </div>
+</section>
+
+<section id="tools-members" class="section-anchor">
+  <h2>👥 Supporter Analytics</h2>
+  <div class="tool-card">
+    <div class="tool-name">members_fetch_all <span class="tag tag-read">READ</span></div>
+    <div class="tool-desc">Lista completa patron con stato, pledge, data iscrizione. Paginazione cursor automatica.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">status_filter</span><span class="ptype"> active_patron|declined_patron|former_patron</span></span>
+      <span class="param-chip"><span class="pname">limit</span><span class="ptype"> int (0=all)</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">members_analyze_demographics <span class="tag tag-read">READ</span></div>
+    <div class="tool-desc">Distribuzione per tier, tenure, stato pagamento, LTV medio e massimo, pledge medio.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span></div>
+    <pre><code>{
+  <span class="str">"tenure_distribution"</span>: { <span class="str">"&lt;1m"</span>: <span class="num">12</span>, <span class="str">"1-3m"</span>: <span class="num">45</span>, <span class="str">"&gt;12m"</span>: <span class="num">103</span> },
+  <span class="str">"financial"</span>: { <span class="str">"avg_pledge"</span>: <span class="str">"$5.40"</span>, <span class="str">"avg_lifetime_value"</span>: <span class="str">"$64.80"</span> }
+}</code></pre>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">members_detect_churn_risk <span class="tag tag-read">READ</span><span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Patron a rischio: pagamenti rifiutati (+3), inattività 45d+ (+2), nuovi &lt;2m (+1). Ordinati per risk_score.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span></div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">members_cohort_analysis <span class="tag tag-read">READ</span></div>
+    <div class="tool-desc">Retention per coorte mensile: quanti patron di ogni mese sono ancora attivi.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span></div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">members_segment <span class="tag tag-read">READ</span></div>
+    <div class="tool-desc">Segmenta i patron per tier / tenure / status / charge_status.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">segment_by</span><span class="ptype"> tier|tenure|status|charge_status</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">members_get_top_supporters <span class="tag tag-read">READ</span></div>
+    <div class="tool-desc">Top N patron per lifetime value, pledge corrente o anzianità.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">top_n</span><span class="ptype"> int (default 20)</span></span>
+      <span class="param-chip"><span class="pname">rank_by</span><span class="ptype"> lifetime_value|current_pledge|tenure</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">members_language_analysis <span class="tag tag-read">READ</span><span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Distribuzione linguistica dai caratteri nei nomi (latino, CJK, cirillico, arabo).</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span></div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">members_geographic_analysis <span class="tag tag-read">READ</span></div>
+    <div class="tool-desc">Distribuzione geografica stimata dai domini email. Richiede scope email.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span></div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">members_recent_activity <span class="tag tag-read">READ</span></div>
+    <div class="tool-desc">Nuovi iscritti, pagamenti rifiutati e churn negli ultimi N giorni.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">days</span><span class="ptype"> int (default 30)</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">members_ai_insights <span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Aggrega tutte le stats patron in <code>insights_prompt</code> — passalo al tuo modello per analisi narrativa.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span></div>
+  </div>
+</section>
+
+<section id="tools-content" class="section-anchor">
+  <h2>📝 Content &amp; Posts</h2>
+  <div class="tool-card">
+    <div class="tool-name">posts_get_analytics <span class="tag tag-read">READ</span></div>
+    <div class="tool-desc">Distribuzione post per tipo, frequenza, patron count medio, paid vs free.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span></div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">posts_fetch_content <span class="tag tag-read">READ</span></div>
+    <div class="tool-desc">Contenuto completo di un post specifico per analisi o riferimento.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">post_id</span><span class="ptype"> str</span><span class="preq"> *</span></span></div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">posts_generate_draft <span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Prompt arricchito per generare un post. Usa post di riferimento per lo stile. Restituisce <code>generation_prompt</code> per il tuo modello.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">topic</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">post_type</span><span class="ptype"> article|update|exclusive|poll|behind_scenes</span></span>
+      <span class="param-chip"><span class="pname">tone</span><span class="ptype"> engaging|professional|casual|inspiring|funny</span></span>
+      <span class="param-chip"><span class="pname">target_tier</span><span class="ptype"> str</span></span>
+      <span class="param-chip"><span class="pname">reference_post_ids</span><span class="ptype"> str</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">posts_generate_with_media <span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Post + prompt immagini per DALL-E/SD/FAL + script video. Collegabile a skill di generazione media.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">topic</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">media_type</span><span class="ptype"> image|video|both</span></span>
+      <span class="param-chip"><span class="pname">style</span><span class="ptype"> str (es. anime, photorealistic)</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">posts_optimize_for_engagement <span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Post corrente + storico → <code>optimization_prompt</code> per miglioramento engagement dal tuo modello.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">post_content</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">post_title</span><span class="ptype"> str</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">posts_suggest_content_calendar <span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Analisi storico post → <code>calendar_prompt</code> per calendario contenuti dal tuo modello.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">weeks</span><span class="ptype"> int (default 4)</span></span>
+      <span class="param-chip"><span class="pname">niche</span><span class="ptype"> str</span></span>
+      <span class="param-chip"><span class="pname">posts_per_week</span><span class="ptype"> int</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">posts_draft_and_review <span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Preview completa: word count, tempo lettura, tier target. Non pubblica — passaggio staging.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">title</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">content</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">teaser_text</span><span class="ptype"> str</span></span>
+      <span class="param-chip"><span class="pname">target_tier_ids</span><span class="ptype"> str</span></span>
+      <span class="param-chip"><span class="pname">scheduled_for</span><span class="ptype"> str (ISO8601)</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">posts_publish_via_browser <span class="tag tag-browser">BROWSER</span><span class="tag tag-write">WRITE</span></div>
+    <div class="tool-desc">Pubblica su Patreon via Playwright. L'API non supporta create post — automazione browser.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">title</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">content</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span></span>
+    </div>
+    <div class="alert alert-warning" style="margin-top:10px"><div class="alert-icon">⚠️</div><div>Richiede <code>PATREON_EMAIL</code> e <code>PATREON_PASSWORD</code>.</div></div>
+  </div>
+</section>
+
+<section id="tools-competitor" class="section-anchor">
+  <h2>🔍 Competitor Intelligence</h2>
+  <div class="tool-card">
+    <div class="tool-name">competitor_analyze_patreon_page <span class="tag tag-read">SCRAPE</span></div>
+    <div class="tool-desc">Scraping pagina pubblica: bio, tier, prezzi, post recenti, patron count, social.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">patreon_url_or_username</span><span class="ptype"> str</span><span class="preq"> *</span></span></div>
+    <pre><code>competitor_analyze_patreon_page(<span class="str">"kurzgesagt"</span>)
+competitor_analyze_patreon_page(<span class="str">"https://www.patreon.com/kurzgesagt"</span>)</code></pre>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">competitor_analyze_multiple_pages <span class="tag tag-read">SCRAPE</span></div>
+    <div class="tool-desc">Analisi multipla fino a 10 pagine in un'unica chiamata.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">usernames</span><span class="ptype"> str (comma-separated, max 10)</span><span class="preq"> *</span></span></div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">competitor_compare_tiers <span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Confronto side-by-side tuoi tier vs competitor + <code>comparison_prompt</code>.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">competitor_usernames</span><span class="ptype"> str (max 5)</span><span class="preq"> *</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">competitor_track_posting_frequency <span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Analisi cadenza pubblicazione competitor + <code>frequency_prompt</code>.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">usernames</span><span class="ptype"> str (max 5)</span><span class="preq"> *</span></span></div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">competitor_search_web <span class="tag tag-read">SEARCH</span></div>
+    <div class="tool-desc">Ricerca web (Google/Bing/DuckDuckGo auto-selezionato). Senza API key usa DuckDuckGo.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">query</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">num_results</span><span class="ptype"> int (max 20)</span></span>
+      <span class="param-chip"><span class="pname">search_source</span><span class="ptype"> auto|google|bing|duckduckgo</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">competitor_search_patreon_creators <span class="tag tag-read">SEARCH</span></div>
+    <div class="tool-desc">Trova creator Patreon in una niche. Restituisce URL per analisi successiva.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">keywords</span><span class="ptype"> str (comma-separated)</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">num_per_keyword</span><span class="ptype"> int (max 10)</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">competitor_generate_strategy <span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Dati tuoi + competitor → <code>strategy_prompt</code> per piano competitivo dal tuo modello.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">competitor_data_json</span><span class="ptype"> str (JSON)</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">niche</span><span class="ptype"> str</span></span>
+    </div>
+  </div>
+</section>
+
+<section id="tools-comments" class="section-anchor">
+  <h2>💬 Comment Management</h2>
+  <div class="alert alert-warning"><div class="alert-icon">⚠️</div><div>L'API Patreon non espone commenti. Il fetch usa scraping; il posting usa Playwright. Richiede <code>PATREON_EMAIL</code> e <code>PATREON_PASSWORD</code>.</div></div>
+  <div class="tool-card">
+    <div class="tool-name">comments_fetch_recent <span class="tag tag-read">READ</span></div>
+    <div class="tool-desc">Post recenti con URL per navigazione commenti. L'API non espone i commenti direttamente.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">max_posts</span><span class="ptype"> int (default 5)</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">comments_generate_response <span class="tag tag-rag">RAG</span><span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">RAG retrieval ChromaDB + contesto → <code>response_prompt</code> per risposta brand-consistent dal tuo modello.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">comment_text</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">post_title</span><span class="ptype"> str</span></span>
+      <span class="param-chip"><span class="pname">use_knowledge_base</span><span class="ptype"> bool (default true)</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">comments_bulk_respond <span class="tag tag-browser">BROWSER</span><span class="tag tag-write">WRITE</span></div>
+    <div class="tool-desc">Posta risposte via Playwright. Max 50 per batch, delay configurabile.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">comments_json</span><span class="ptype"> str (JSON array)</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">delay_seconds</span><span class="ptype"> float (default 3.0)</span></span>
+    </div>
+    <pre><code>[
+  { <span class="str">"post_url"</span>: <span class="str">"https://patreon.com/posts/123"</span>, <span class="str">"text"</span>: <span class="str">"Grazie mille!"</span> },
+  { <span class="str">"post_url"</span>: <span class="str">"https://patreon.com/posts/456"</span>, <span class="str">"text"</span>: <span class="str">"Ottima domanda!"</span> }
+]</code></pre>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">comments_analyze_sentiment <span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Commenti batch → <code>sentiment_prompt</code> per classificazione positive/neutral/negative dal tuo modello.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">comments_json</span><span class="ptype"> str (JSON array)</span><span class="preq"> *</span></span></div>
+  </div>
+</section>
+
+<section id="tools-kb" class="section-anchor">
+  <h2>🧠 Knowledge Base (RAG)</h2>
+  <p style="color:var(--text2);font-size:13px">Storage locale ChromaDB con embedding <code>all-MiniLM-L6-v2</code>. Nessuna API key. Dati in <code>~/.patreon/knowledge_base/</code></p>
+  <div class="tool-card">
+    <div class="tool-name">kb_index_campaign <span class="tag tag-rag">RAG</span></div>
+    <div class="tool-desc">Indicizza tutti i post in ChromaDB. Esegui una volta, poi periodicamente.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">max_posts</span><span class="ptype"> int (default 50)</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">kb_add_document <span class="tag tag-rag">RAG</span></div>
+    <div class="tool-desc">Aggiunge FAQ, brand voice, info prodotto o documenti custom.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">text</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">collection</span><span class="ptype"> posts|faqs|brand_voice|custom_docs</span></span>
+      <span class="param-chip"><span class="pname">title</span><span class="ptype"> str</span></span>
+      <span class="param-chip"><span class="pname">tags</span><span class="ptype"> str</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">kb_search <span class="tag tag-rag">RAG</span></div>
+    <div class="tool-desc">Ricerca semantica. Su tutte le collezioni o una specifica.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">query</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">collections</span><span class="ptype"> str (comma-separated)</span></span>
+      <span class="param-chip"><span class="pname">n_results</span><span class="ptype"> int</span></span>
+      <span class="param-chip"><span class="pname">min_score</span><span class="ptype"> float (0.0-1.0)</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">kb_list_documents <span class="tag tag-rag">RAG</span></div>
+    <div class="tool-desc">Lista documenti in una collezione con metadati.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">collection</span><span class="ptype"> str (default custom_docs)</span></span>
+      <span class="param-chip"><span class="pname">limit</span><span class="ptype"> int (default 50)</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">kb_delete_document <span class="tag tag-write">WRITE</span></div>
+    <div class="tool-desc">Rimuove un documento dalla knowledge base.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">doc_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">collection</span><span class="ptype"> str</span></span>
+    </div>
+  </div>
+</section>
+
+<section id="tools-webhooks" class="section-anchor">
+  <h2>🔔 Webhook Management</h2>
+  <p style="color:var(--text2);font-size:13px">I webhook sono l'unica risorsa con CRUD completo via API Patreon.</p>
+  <div class="tool-card">
+    <div class="tool-name">webhooks_list <span class="tag tag-read">READ</span></div>
+    <div class="tool-desc">Lista webhook attivi con eventi, stato e statistiche fallimenti.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span></div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">webhooks_create <span class="tag tag-write">WRITE</span></div>
+    <div class="tool-desc">Crea webhook. Restituisce <code>secret</code> per verifica HMAC-MD5 payload.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">url</span><span class="ptype"> str (HTTPS)</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">events</span><span class="ptype"> str (comma-separated)</span><span class="preq"> *</span></span>
+    </div>
+    <pre><code><span class="cmt"># Eventi disponibili:</span>
+members:create, members:update, members:delete
+members:pledge:create, members:pledge:update, members:pledge:delete
+posts:publish, posts:update, posts:delete</code></pre>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">webhooks_update <span class="tag tag-write">WRITE</span></div>
+    <div class="tool-desc">Modifica URL, eventi o stato paused di un webhook esistente.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">webhook_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">url</span><span class="ptype"> str</span></span>
+      <span class="param-chip"><span class="pname">events</span><span class="ptype"> str</span></span>
+      <span class="param-chip"><span class="pname">paused</span><span class="ptype"> true|false</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">webhooks_delete <span class="tag tag-write">WRITE</span></div>
+    <div class="tool-desc">Elimina un webhook.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">webhook_id</span><span class="ptype"> str</span><span class="preq"> *</span></span></div>
+  </div>
+</section>
+
+<section id="tools-reports" class="section-anchor">
+  <h2>📈 Reports &amp; Monitoring</h2>
+  <div class="tool-card">
+    <div class="tool-name">report_monthly_summary <span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Report mensile: nuovi patron, churn, MRR, post, trend. Include <code>report_prompt</code> per narrativa dal tuo modello.</div>
+    <div class="tool-params"><span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span></div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">report_export_members <span class="tag tag-read">READ</span></div>
+    <div class="tool-desc">Esporta lista patron in JSON o CSV, filtrabile per stato.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">format</span><span class="ptype"> json|csv</span></span>
+      <span class="param-chip"><span class="pname">status_filter</span><span class="ptype"> str</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">report_growth_analysis <span class="tag tag-read">READ</span></div>
+    <div class="tool-desc">Timeline mensile: nuovi patron, churn, crescita netta negli ultimi N mesi.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">months_back</span><span class="ptype"> int (default 6)</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">report_revenue_forecast <span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">MRR attuale + tier breakdown → <code>forecast_prompt</code> per 3 scenari dal tuo modello.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">forecast_months</span><span class="ptype"> int (default 3)</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">report_competitive_benchmark <span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Benchmark tuoi dati vs competitor + <code>benchmark_prompt</code>.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">campaign_id</span><span class="ptype"> str</span><span class="preq"> *</span></span>
+      <span class="param-chip"><span class="pname">competitor_usernames</span><span class="ptype"> str (max 5)</span><span class="preq"> *</span></span>
+    </div>
+  </div>
+  <div class="tool-card">
+    <div class="tool-name">monitor_rss_trends <span class="tag tag-read">FEED</span><span class="tag tag-ai">AI Prompt</span></div>
+    <div class="tool-desc">Monitora RSS/Atom per trend recenti. Se solo <code>topic</code>, suggerisce feed automaticamente.</div>
+    <div class="tool-params">
+      <span class="param-chip"><span class="pname">feed_urls</span><span class="ptype"> str (comma-separated)</span></span>
+      <span class="param-chip"><span class="pname">topic</span><span class="ptype"> str</span></span>
+      <span class="param-chip"><span class="pname">days_recent</span><span class="ptype"> int (default 7)</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<h2 id="use-cases" class="section-anchor">🚀 Use Cases Pratici</h2>
+
+<div id="uc-analytics" class="use-case section-anchor">
+  <div class="use-case-header"><div class="use-case-icon">📊</div><div><div class="use-case-title">Analisi Completa dei Supporter</div><div class="use-case-subtitle">Chi sono, quanto valgono, chi rischia di andarsene</div></div></div>
+  <div class="use-case-body">
+    <div class="agent-box"><div class="agent-label">💬 Prompt all'agente</div><div class="agent-text">"Dammi un'analisi completa dei miei supporter: distribuzione per tier, patron a rischio churn, top 10 per lifetime value e insights narrativi."</div></div>
+    <div class="use-case-flow">
+      <span class="flow-step">members_analyze_demographics</span><span class="flow-arrow">→</span>
+      <span class="flow-step">members_detect_churn_risk</span><span class="flow-arrow">→</span>
+      <span class="flow-step">members_get_top_supporters</span><span class="flow-arrow">→</span>
+      <span class="flow-step">members_ai_insights</span><span class="flow-arrow">→</span>
+      <span class="flow-step">🤖 [modello agente]</span>
+    </div>
+    <pre><code><span class="cmt"># members_ai_insights restituisce:</span>
+{ <span class="str">"insights_prompt"</span>: <span class="str">"Analyze this Patreon patron base..."</span>, <span class="str">"summary"</span>: { ... } }
+<span class="cmt"># Il modello dell'agente legge insights_prompt e genera analisi narrativa</span></code></pre>
+  </div>
+</div>
+
+<div id="uc-content" class="use-case section-anchor">
+  <div class="use-case-header"><div class="use-case-icon">📝</div><div><div class="use-case-title">Genera e Pubblica un Post Automaticamente</div><div class="use-case-subtitle">Dal topic al post pubblicato su Patreon, end-to-end</div></div></div>
+  <div class="use-case-body">
+    <div class="agent-box"><div class="agent-label">💬 Prompt all'agente</div><div class="agent-text">"Crea un post behind-the-scenes in tono casual con immagine copertina stile watercolor e pubblicalo."</div></div>
+    <div class="use-case-flow">
+      <span class="flow-step">posts_generate_with_media</span><span class="flow-arrow">→</span>
+      <span class="flow-step">🤖 genera testo + immagine</span><span class="flow-arrow">→</span>
+      <span class="flow-step">posts_draft_and_review</span><span class="flow-arrow">→</span>
+      <span class="flow-step">posts_publish_via_browser</span>
+    </div>
+  </div>
+</div>
+
+<div id="uc-competitor" class="use-case section-anchor">
+  <div class="use-case-header"><div class="use-case-icon">🔍</div><div><div class="use-case-title">Analisi Competitiva della Niche</div><div class="use-case-subtitle">Trova competitor, analizzali, ottieni strategia per batterli</div></div></div>
+  <div class="use-case-body">
+    <div class="agent-box"><div class="agent-label">💬 Prompt all'agente</div><div class="agent-text">"Trova i top 5 creator nella mia niche, analizza le loro pagine, confronta i tier e dammi una strategia."</div></div>
+    <div class="use-case-flow">
+      <span class="flow-step">competitor_search_patreon_creators</span><span class="flow-arrow">→</span>
+      <span class="flow-step">competitor_analyze_multiple_pages</span><span class="flow-arrow">→</span>
+      <span class="flow-step">competitor_compare_tiers</span><span class="flow-arrow">→</span>
+      <span class="flow-step">competitor_generate_strategy</span><span class="flow-arrow">→</span>
+      <span class="flow-step">🤖 report strategico</span>
+    </div>
+  </div>
+</div>
+
+<div id="uc-comments" class="use-case section-anchor">
+  <div class="use-case-header"><div class="use-case-icon">💬</div><div><div class="use-case-title">Gestione Automatica Commenti con RAG</div><div class="use-case-subtitle">L'agente risponde usando il knowledge base come contesto</div></div></div>
+  <div class="use-case-body">
+    <div class="agent-box"><div class="agent-label">💬 Setup iniziale (una volta)</div><div class="agent-text">"Indicizza i miei post e aggiungi questo documento di brand voice: [testo]"</div></div>
+    <div class="use-case-flow">
+      <span class="flow-step">kb_index_campaign</span><span class="flow-arrow">+</span>
+      <span class="flow-step">kb_add_document (brand_voice)</span><span class="flow-arrow">+</span>
+      <span class="flow-step">kb_add_document (faqs)</span>
+    </div>
+    <div class="agent-box" style="margin-top:14px"><div class="agent-label">💬 Uso quotidiano</div><div class="agent-text">"Rispondi a questi commenti: ['Quando esce il prossimo episodio?', 'Posso avere accesso agli arretrati?']"</div></div>
+    <div class="use-case-flow">
+      <span class="flow-step">comments_generate_response</span><span class="flow-arrow">→ RAG →</span>
+      <span class="flow-step">🤖 genera risposta</span><span class="flow-arrow">→</span>
+      <span class="flow-step">comments_bulk_respond</span>
+    </div>
+    <pre><code><span class="cmt"># comments_generate_response restituisce:</span>
+{
+  <span class="str">"rag_context"</span>: [{ <span class="str">"text"</span>: <span class="str">"Episodio 45 uscirà il 15 giugno..."</span>, <span class="str">"score"</span>: <span class="num">0.89</span> }],
+  <span class="str">"response_prompt"</span>: <span class="str">"You are a creator responding to: 'Quando esce...' Context: [...]"</span>
+}
+<span class="cmt"># Il modello dell'agente genera la risposta — comments_bulk_respond la posta</span></code></pre>
+  </div>
+</div>
+
+<div id="uc-growth" class="use-case section-anchor">
+  <div class="use-case-header"><div class="use-case-icon">📈</div><div><div class="use-case-title">Piano di Crescita a 90 Giorni</div><div class="use-case-subtitle">Dati reali + AI per un piano d'azione concreto</div></div></div>
+  <div class="use-case-body">
+    <div class="agent-box"><div class="agent-label">💬 Prompt all'agente</div><div class="agent-text">"Crea un piano di crescita a 90 giorni per la campagna [ID] nella niche 'fotografia naturalistica'."</div></div>
+    <div class="use-case-flow">
+      <span class="flow-step">campaign_get_overview</span><span class="flow-arrow">→</span>
+      <span class="flow-step">campaign_analyze_tiers</span><span class="flow-arrow">→</span>
+      <span class="flow-step">members_cohort_analysis</span><span class="flow-arrow">→</span>
+      <span class="flow-step">monitor_rss_trends</span><span class="flow-arrow">→</span>
+      <span class="flow-step">campaign_generate_growth_strategy</span><span class="flow-arrow">→</span>
+      <span class="flow-step">🤖 piano 90 giorni</span>
+    </div>
+  </div>
+</div>
+
+<div id="uc-reports" class="use-case section-anchor">
+  <div class="use-case-header"><div class="use-case-icon">📋</div><div><div class="use-case-title">Report Mensile Automatico</div><div class="use-case-subtitle">Genera report, esporta patron, identifica churn</div></div></div>
+  <div class="use-case-body">
+    <div class="agent-box"><div class="agent-label">💬 Prompt all'agente</div><div class="agent-text">"Genera il report mensile, esporta i patron attivi in CSV e identifica i 5 a più alto rischio churn."</div></div>
+    <div class="use-case-flow">
+      <span class="flow-step">report_monthly_summary</span><span class="flow-arrow">→</span>
+      <span class="flow-step">report_export_members (csv)</span><span class="flow-arrow">→</span>
+      <span class="flow-step">members_detect_churn_risk</span><span class="flow-arrow">→</span>
+      <span class="flow-step">🤖 report narrativo</span>
+    </div>
+  </div>
+</div>
+
+<!-- ARCHITECTURE -->
+<section id="architecture" class="section-anchor">
+  <h2>🏗️ Architettura</h2>
+  <h3>Design Model-Agnostic</h3>
+  <p>Il server MCP <strong>non chiama nessun LLM direttamente</strong>. Funziona con qualsiasi agente MCP.</p>
+  <div class="card">
+    <h4 style="color:var(--text);margin-bottom:12px">Come funzionano i tool AI-Prompt</h4>
+    <div class="use-case-flow" style="flex-direction:column;align-items:flex-start;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px"><span class="flow-step">1. Agente chiama tool</span><span style="color:var(--text2)">→ es: <code>campaign_generate_growth_strategy(campaign_id="123")</code></span></div>
+      <div style="display:flex;align-items:center;gap:10px"><span class="flow-step">2. Tool fetch dati API</span><span style="color:var(--text2)">→ chiama Patreon API, aggrega metriche</span></div>
+      <div style="display:flex;align-items:center;gap:10px"><span class="flow-step">3. Tool restituisce</span><span style="color:var(--text2)">→ dati strutturati + <code>strategy_prompt</code> pronto</span></div>
+      <div style="display:flex;align-items:center;gap:10px"><span class="flow-step">4. Agente usa il prompt</span><span style="color:var(--text2)">→ passa a Hermes/Claude/GPT/Llama: genera piano di crescita</span></div>
+    </div>
+  </div>
+  <h3>Componenti principali</h3>
+  <table>
+    <thead><tr><th>Componente</th><th>Tecnologia</th><th>Scopo</th></tr></thead>
+    <tbody>
+      <tr><td><code>mcp_server.py</code></td><td>FastMCP</td><td>Entry point, registra tutti i 52 tool</td></tr>
+      <tr><td><code>patreon_client.py</code></td><td>httpx async</td><td>API v2 con retry e cursor pagination</td></tr>
+      <tr><td><code>rag.py</code></td><td>ChromaDB + sentence-transformers</td><td>Knowledge base locale, embedding offline</td></tr>
+      <tr><td><code>browser.py</code></td><td>Playwright</td><td>Publish post + commenti (workaround API)</td></tr>
+      <tr><td><code>scraper.py</code></td><td>BeautifulSoup4</td><td>Scraping pagine competitor pubbliche</td></tr>
+      <tr><td><code>search_client.py</code></td><td>Google/Bing/DuckDuckGo</td><td>Competitor web search</td></tr>
+      <tr><td><code>ai_client.py</code></td><td>LiteLLM</td><td>LLM opzionale per preprocessing batch autonomo</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- API LIMITS -->
+<section id="api-limits" class="section-anchor">
+  <h2>⚠️ Limitazioni API Patreon</h2>
+  <div class="alert alert-warning"><div class="alert-icon">⚠️</div><div><strong>La Patreon API v2 è quasi interamente read-only.</strong> Post e commenti non possono essere creati via API.</div></div>
+  <table>
+    <thead><tr><th>Risorsa</th><th>Read</th><th>Create</th><th>Update</th><th>Delete</th><th>Workaround</th></tr></thead>
+    <tbody>
+      <tr><td>Campaign</td><td><span class="pill pill-green">✅</span></td><td><span class="pill pill-red">❌</span></td><td><span class="pill pill-red">❌</span></td><td><span class="pill pill-red">❌</span></td><td>—</td></tr>
+      <tr><td>Members</td><td><span class="pill pill-green">✅</span></td><td><span class="pill pill-red">❌</span></td><td><span class="pill pill-red">❌</span></td><td><span class="pill pill-red">❌</span></td><td>—</td></tr>
+      <tr><td>Posts</td><td><span class="pill pill-green">✅</span></td><td><span class="pill pill-red">❌</span></td><td><span class="pill pill-red">❌</span></td><td><span class="pill pill-red">❌</span></td><td>Playwright</td></tr>
+      <tr><td>Comments</td><td><span class="pill pill-red">❌</span></td><td><span class="pill pill-red">❌</span></td><td><span class="pill pill-red">❌</span></td><td><span class="pill pill-red">❌</span></td><td>Playwright</td></tr>
+      <tr><td>Webhooks</td><td><span class="pill pill-green">✅</span></td><td><span class="pill pill-green">✅</span></td><td><span class="pill pill-green">✅</span></td><td><span class="pill pill-green">✅</span></td><td>—</td></tr>
+      <tr><td>Tiers/Benefits</td><td><span class="pill pill-green">✅</span></td><td><span class="pill pill-red">❌</span></td><td><span class="pill pill-red">❌</span></td><td><span class="pill pill-red">❌</span></td><td>Dashboard Patreon</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- TROUBLESHOOTING -->
+<section id="troubleshoot" class="section-anchor">
+  <h2>🔧 Troubleshooting</h2>
+  <h3>Errore: "Patreon credentials not found"</h3>
+  <pre><code>python scripts/auth.py status
+python scripts/auth.py token pat_xxx
+<span class="cmt"># oppure:</span>
+export PATREON_ACCESS_TOKEN=pat_xxx</code></pre>
+  <h3>Errore: "Browser automation not configured"</h3>
+  <pre><code><span class="cmt"># Aggiungi al .env:</span>
+PATREON_EMAIL=tua@email.com
+PATREON_PASSWORD=tuaPassword
+playwright install chromium</code></pre>
+  <h3>RAG / ChromaDB errori</h3>
+  <pre><code>pip install chromadb sentence-transformers
+<span class="cmt"># Prima volta: scarica modello embedding (~90MB) — poi funziona offline</span></code></pre>
+  <h3>Rate limiting (HTTP 429)</h3>
+  <div class="alert alert-info"><div class="alert-icon">ℹ️</div><div>Il client gestisce automaticamente con exponential backoff. Con molti patron (&gt;5000) le fetch complete richiedono qualche minuto.</div></div>
+</section>
+
+<!-- INSTALLER -->
+<section id="installer" class="section-anchor">
+  <h2>🤖 Installer Autonomo per Agenti</h2>
+  <p>Un agente AI può installare autonomamente lo skill con un solo comando.</p>
+  <div class="code-header"><span>Un agente esegue questo comando</span><span class="code-lang">bash</span></div>
+  <pre><code>python install.py \
+  --repo https://github.com/nuspy/patreonskills \
+  --token pat_TuoTokenQui \
+  --client claude</code></pre>
+
+  <h3>Tutti gli argomenti</h3>
+  <table>
+    <thead><tr><th>Argomento</th><th>Default</th><th>Descrizione</th></tr></thead>
+    <tbody>
+      <tr><td><code>--token</code></td><td><em>richiesto</em></td><td>Creator Access Token</td></tr>
+      <tr><td><code>--token-file</code></td><td>—</td><td>File contenente il token (CI/CD)</td></tr>
+      <tr><td><code>--repo</code></td><td>nuspy/patreonskills</td><td>URL git del repo</td></tr>
+      <tr><td><code>--local-path</code></td><td>—</td><td>Directory già clonata (skip clone)</td></tr>
+      <tr><td><code>--client</code></td><td>auto-detect</td><td><code>claude|cursor|vscode</code></td></tr>
+      <tr><td><code>--dir</code></td><td><code>~/patreon-skill</code></td><td>Directory di installazione</td></tr>
+      <tr><td><code>--branch</code></td><td>default</td><td>Branch git da usare</td></tr>
+      <tr><td><code>--venv</code></td><td>false</td><td>Crea virtualenv</td></tr>
+      <tr><td><code>--playwright</code></td><td>false</td><td>Installa Playwright Chromium</td></tr>
+      <tr><td><code>--llm-url</code></td><td>—</td><td>Base URL LLM opzionale</td></tr>
+      <tr><td><code>--llm-model</code></td><td>hermes3</td><td>Modello LLM</td></tr>
+      <tr><td><code>--email</code></td><td>—</td><td>Email Patreon (browser automation)</td></tr>
+      <tr><td><code>--password</code></td><td>—</td><td>Password Patreon</td></tr>
+      <tr><td><code>--google-key</code></td><td>—</td><td>Google Custom Search API key</td></tr>
+      <tr><td><code>--bing-key</code></td><td>—</td><td>Bing Search API key</td></tr>
+      <tr><td><code>--no-verify</code></td><td>false</td><td>Salta test connessione</td></tr>
+      <tr><td><code>--dry-run</code></td><td>false</td><td>Simula senza eseguire</td></tr>
+      <tr><td><code>--quiet</code></td><td>false</td><td>Solo errori e summary</td></tr>
+      <tr><td><code>--force</code></td><td>false</td><td>Sovrascrive config esistenti</td></tr>
+      <tr><td><code>--output-json</code></td><td>—</td><td>Scrive risultato JSON per l'agente</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<footer>
+  <p>Patreon Creator Skill · Apache 2.0 · <a href="https://github.com/nuspy/patreonskills">github.com/nuspy/patreonskills</a></p>
+  <p style="margin-top:6px">FastMCP · ChromaDB · Playwright · LiteLLM · BeautifulSoup4 · sentence-transformers</p>
+</footer>
+
+</main>
+</div>
+</body>
+</html>
